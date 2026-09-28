@@ -51,17 +51,23 @@ def next_occurrence(last_date: date, frequency: str) -> date:
     raise NotImplementedError
 
 
-def find_conflicts(sessions: list) -> list:
-    """
-    sessions: list of dicts, each with a "slot" key, e.g. {"subject": "Calc II", "slot": "08:00"}.
 
-    Return a list of (session_a, session_b) tuples for every pair that shares
-    the same "slot". Must NOT crash on an empty list or a list with no conflicts.
+def find_conflicts(sessions: list[dict]) -> list[tuple[dict, dict]]:
     """
-    # TODO (Part 4): implement without crashing on empty input. A simple
-    # nested loop comparing each pair once is fine.
-    raise NotImplementedError
-
+        sessions: list of dicts, each with a "slot" key, e.g. {"subject": "Calc II", "slot": "08:00"}.
+    
+        Return a list of (session_a, session_b) tuples for every pair that shares
+        the same "slot". Must NOT crash on an empty list or a list with no conflicts.
+        """
+        # TODO (Part 4): implement without crashing on empty input. A simple
+        # nested loop comparing each pair once is fine.
+        
+    conflicts = []
+    for i, session1 in enumerate(sessions):
+        for j, session2 in enumerate(sessions):
+            if i < j and session1["slot"] == session2["slot"]:
+                conflicts.append((session1, session2))
+    return conflicts
 
 def render_session_log_tab():
     import streamlit as st
@@ -108,6 +114,9 @@ def render_session_log_tab():
 
     st.divider()
     st.subheader("Part 4: Conflict Check")
+
+    
+
     if st.button("Check for time conflicts"):
         sample = [
             {"subject": "Calc II", "slot": "08:00"},
@@ -120,6 +129,15 @@ def render_session_log_tab():
         except NotImplementedError:
             st.warning("🚧 find_conflicts() isn't implemented yet -- that's Tinker 2B Part 4.")
 
+#Part 4 Next Occurrence
+def next_occurrence(last_date, frequency):
+    if frequency == "daily":
+        return last_date + timedelta(days=1)
+    elif frequency == "weekly":
+        return last_date + timedelta(days=7) #Can't we use week=1?
+    else:
+        raise ValueError(f"Unknown frequency: {frequency}")
+    return last_date
 
 if __name__ == "__main__":
     plain = PlainSession("Study group: Calc II", 45, priority="high")
