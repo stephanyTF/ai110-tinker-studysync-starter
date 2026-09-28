@@ -7,9 +7,25 @@ still a hand-written class. Recurring sessions and time conflicts aren't
 detected yet.
 """
 
+# TODO (Part 3): from dataclasses import dataclass, then define SessionDC as
+# a @dataclass with the same three fields as PlainSession: subject, minutes,
+# priority="medium".
+
+from dataclasses import dataclass
+
 from datetime import date, timedelta
 
+
 FREQUENCY_DAYS = {"daily": 1, "weekly": 7}
+
+
+@dataclass
+class SessionDC:
+    subject: str
+    minutes: int
+    priority: str = "medium"
+    
+
 
 
 class PlainSession:
@@ -22,9 +38,7 @@ class PlainSession:
         return f"PlainSession(subject={self.subject!r}, minutes={self.minutes}, priority={self.priority!r})"
 
 
-# TODO (Part 3): from dataclasses import dataclass, then define SessionDC as
-# a @dataclass with the same three fields as PlainSession: subject, minutes,
-# priority="medium".
+
 
 
 def next_occurrence(last_date: date, frequency: str) -> date:
@@ -112,6 +126,8 @@ if __name__ == "__main__":
     print(plain)
     # TODO (Part 3): create a SessionDC with the same values and print it too --
     # compare the two __repr__ outputs and the amount of code each required.
+    dc = SessionDC("Study group: Calc II", 45, priority="high")
+    print(dc)
 
     print(next_occurrence(date(2026, 1, 1), "daily"))
     print(next_occurrence(date(2026, 1, 1), "weekly"))
