@@ -146,6 +146,11 @@ if __name__ == "__main__":
     # compare the two __repr__ outputs and the amount of code each required.
     dc = SessionDC("Study group: Calc II", 45, priority="high")
     print(dc)
+    
+    #check what dunder methods are in the dataclass
+    print(f"SessionDC methods: {[m for m in vars(SessionDC) if m.startswith('__')]}\n")
+    print(f"PlainSession methods: {[m for m in vars(PlainSession) if m.startswith('__')]}")
+
 
     print(next_occurrence(date(2026, 1, 1), "daily"))
     print(next_occurrence(date(2026, 1, 1), "weekly"))
