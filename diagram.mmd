@@ -1,6 +1,5 @@
-```mermaid
 flowchart TD
-    A[/"data/study_spots.csv"/] --> B["load_study_spots()<br/>csv.DictReader -> list of dicts<br/>distance to float, seats to int"]
+    A[study_spots.csv] --> B[load_study_spots -> list of dicts<br/>distance to float, seats to int]
     P[/"Student profile<br/>max_noise, max_distance, min_seats"/] --> C
 
     B --> C["rank_study_spots()<br/>loop over every spot"]
@@ -19,5 +18,4 @@ flowchart TD
     D --> E["Sort by score descending<br/>keep top k"]
     E --> F["format_results()<br/>print: rank, name, score, reasons"]
     F --> G[/"Top k study spots shown to the student"/]
-```
 
