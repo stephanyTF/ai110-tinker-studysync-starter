@@ -26,3 +26,8 @@ def test_session_rating_boundary_decimal_is_good():
     assert session_rating(87.5) == "Good"  #just wrong type but still works fine
 # TODO: add at least one more test, e.g. a boundary case for "Skip" (a score
 # of 59) or the exact boundary for "Good" (a score of 80).
+
+def 
+
+if __name__ == "__main__":
+    test_session_rating_boundary_90_is_great()
