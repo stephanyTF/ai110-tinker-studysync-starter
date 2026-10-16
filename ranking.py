@@ -49,26 +49,36 @@ def score_study_spot(profile: dict, spot: dict) -> tuple:
     
     #1. Reward spots that have enough seats with +10
     if spot["seats_available"] >= profile["min_seats"]:
-        score += 10
+        #weight the score for seats, more seats is better
+        if spot["seats_available"] - profile["min_seats"] ==0:
+            seat_score = 10
+        else:
+            #add more weights to reward more seats, but cap at 10
+            seat_score = (spot["seats_available"] - profile["min_seats"]) / profile["min_seats"] * 10 if profile["min_seats"] > 0 else 0
+            seat_score = min(seat_score, 10)  # Cap the score at 10
+        score += seat_score
         reasons.append(f"Enough seats: {spot['seats_available']} seats")
     #2. Reward spots that are close enough with +5
     if spot["distance_miles"] <= profile["max_distance"]:
-        #add weighted scoring for distance, closer is better (distance higher score)
-        distance_score = (profile["max_distance"] - spot["distance_miles"]) / profile["max_distance"] * 8 if profile["max_distance"] > 0 else 0
-        score += distance_score
-        if distance_score > 0:
-            reasons.append(f"close enough distance: {spot['distance_miles']} miles")
+        if spot["distance_miles"] == profile["max_distance"]:
+            distance_score = 5
         else:
-            reasons.append("too far")
+            #add weighted scoring for distance, closer is better (distance higher score)
+            distance_score = (profile["max_distance"] - spot["distance_miles"]) / profile["max_distance"] * 5 if profile["max_distance"] > 0 else 0
+            score += distance_score
+        reasons.append(f"close enough distance: {spot['distance_miles']} miles")
+       
     #3. Reward spots that are not too loud 
     if NOISE_ORDER[spot["noise_level"]] <= NOISE_ORDER[profile["max_noise"]]:
-        #add weighted score for each noise level, quieter is better
-        noise_score = (NOISE_ORDER[profile["max_noise"]] - NOISE_ORDER[spot["noise_level"]]) / len(NOISE_ORDER) * 5 if len(NOISE_ORDER) > 0 else 0
-        score += noise_score
-        if noise_score > 0:
-            reasons.append(f"Tolerable Noise Level: {spot['noise_level']}")
+        if NOISE_ORDER[spot["noise_level"]] == NOISE_ORDER[profile["max_noise"]]:
+            noise_score = 5
         else:
-            reasons.append("too loud")
+        #add weighted score for each noise level, quieter is better
+            noise_score = (NOISE_ORDER[profile["max_noise"]] - NOISE_ORDER[spot["noise_level"]]) / 2 * 5 if len(NOISE_ORDER) > 0 else 0
+            score += noise_score
+       
+        reasons.append(f"Tolerable Noise Level: {spot['noise_level']}")
+       
 
     #round score to 2 
     score = round(score, 2)
