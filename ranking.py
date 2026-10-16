@@ -65,7 +65,7 @@ def score_study_spot(profile: dict, spot: dict) -> tuple:
         else:
             #add weighted scoring for distance, closer is better (distance higher score)
             distance_score = (profile["max_distance"] - spot["distance_miles"]) / profile["max_distance"] * 5 if profile["max_distance"] > 0 else 0
-            score += distance_score
+        score += distance_score
         reasons.append(f"close enough distance: {spot['distance_miles']} miles")
        
     #3. Reward spots that are not too loud 
@@ -75,7 +75,7 @@ def score_study_spot(profile: dict, spot: dict) -> tuple:
         else:
         #add weighted score for each noise level, quieter is better
             noise_score = (NOISE_ORDER[profile["max_noise"]] - NOISE_ORDER[spot["noise_level"]]) / 2 * 5 if len(NOISE_ORDER) > 0 else 0
-            score += noise_score
+        score += noise_score
        
         reasons.append(f"Tolerable Noise Level: {spot['noise_level']}")
        
