@@ -127,8 +127,8 @@ def render_study_spot_tab():
         try:
             spots = load_study_spots("data/study_spots.csv")
             ranked = rank_study_spots(profile, spots, k=3)
-            for spot, score, reasons in ranked:
-                st.write(f"**{spot['name']}** -- Score: {score:.1f} -- Because: {', '.join(reasons)}")
+            for spot in ranked:
+                st.write(f"**{spot['name']}** -- Score: {spot['score']:.1f} -- Because: {', '.join(spot['reasons'])}")
         except NotImplementedError:
             st.warning("🚧 Ranking isn't implemented yet -- that's Tinker 3B's ticket.")
 
